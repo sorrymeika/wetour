@@ -1,0 +1,28 @@
+﻿@using SL.Util
+@{
+    RequestUtil req = new RequestUtil();
+    string adminName = req.String("username", false, "请填写用户名");
+    string password = req.Password("password", "请填写密码");
+    var checkCode = SessionUtil.Get<string>("Captcha");
+    string validcode = req.String("captcha", false, "请填写验证码", compare: checkCode, compareText: "验证码不正确");
+
+    SessionUtil.Remove("Captcha");
+
+    if (req.HasError)
+    {
+        Json.Write(new { success = false, msg = req.FirstError, errors = req.GetErrors() }, Output);
+    }
+    else
+    {
+        bool exists = SL.Data.SQL.QueryValue<bool>("if exists (select 1 from Admin where Password=@p0 and AdminName=@p1) select 1 else select 0", password, adminName);
+        if (!exists)
+        {
+            Json.Write(new { success = false, msg = "登录失败" }, Output);
+        }
+        else
+        {
+            SessionUtil.Set("Admin", adminName);
+            Json.Write(new { success = true, msg = "登录成功" }, Output);
+        }
+    }
+}
