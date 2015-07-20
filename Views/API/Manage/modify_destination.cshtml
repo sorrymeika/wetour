@@ -2,10 +2,11 @@
 @using System.Text.RegularExpressions
 @{
     RequestUtil req = new RequestUtil();
+    int id = req.Int("id");
     string name = req.String("name", false, "请填写用户名");
     string content = req.String("content", false, "请填写正文");
-    var middlePic = req.File("middlePic", false, "请上传图片");
-    var largePic = req.File("largePic", false, "请上传图片");
+    var middlePic = req.File("middlePic");
+    var largePic = req.File("largePic");
 
     content = Regex.Replace(content, @"<script.*?>[\s\S]*</script>", "", RegexOptions.IgnoreCase);
 
@@ -18,8 +19,7 @@
         string middlePicSrc = middlePic.Save();
         string largePicSrc = largePic.Save();
 
-        int id;
-        int count = SL.Data.SQL.Execute("insert into Destination (Name,Content,MiddlePic,LargePic,Favorite) values (@p0,@p1,@p2,@p3,0)", out id, name, content, middlePicSrc, largePicSrc);
+        int count = SL.Data.SQL.Execute("update Destination set Name=@p1,Content=@p2,MiddlePic=@p3,LargePic=@p4,Favorite=@p5 where ID=@p0", id, name, content, middlePicSrc, largePicSrc);
 
         if (count <= 0)
         {
