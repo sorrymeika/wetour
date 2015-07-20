@@ -1,0 +1,33 @@
+﻿@using SL.Util
+@using System.Text.RegularExpressions
+@{
+    RequestUtil req = new RequestUtil();
+    string name = req.String("name", false, "请填写用户名");
+    string content = req.String("content", false, "请填写正文");
+    var middlePic = req.File("middlePic", false, "请上传图片");
+    var largePic = req.File("largePic", false, "请上传图片");
+
+    content = Regex.Replace(content, @"<script.*?>[\s\S]*</script>", "", RegexOptions.IgnoreCase);
+
+    if (req.HasError)
+    {
+        Json.Write(new { success = false, msg = req.FirstError, errors = req.GetErrors() }, Output);
+    }
+    else
+    {
+        string middlePicSrc = middlePic.Save();
+        string largePicSrc = largePic.Save();
+
+        int id;
+        int count = SL.Data.SQL.Execute("insert into Destination (Name,Content,MiddlePic,LargePic,Favorite) values (@p0,@p1,@p2,@p3,0)", out id, name, content, middlePicSrc, largePicSrc);
+
+        if (count <= 0)
+        {
+            Json.Write(new { success = false, msg = "添加失败" }, Output);
+        }
+        else
+        {
+            Json.Write(new { success = true, msg = "添加成功", data = new { Name = name, Content = content, MiddlePic = middlePicSrc, LargePic = largePicSrc, Favorite = 0 } }, Output);
+        }
+    }
+}

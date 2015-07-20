@@ -1,0 +1,28 @@
+﻿@using SL.Util
+@{
+    RequestUtil req = new RequestUtil();
+    int page = req.Int("page");
+    int pageSize = req.Int("pageSize", 10);
+    string keywords = req.String("keywords");
+
+    string where = "1=1";
+    List<object> parameters = new List<object>();
+
+    if (!string.IsNullOrEmpty(keywords))
+    {
+        where += " and Name like '%'+@p0+'%'";
+        parameters.Add(keywords);
+    }
+
+    int total;
+    var data = SL.Data.SQL.QueryPage("ID",
+        "ID,Name,Content,MiddlePic,LargePic,Favorite",
+        "Destination",
+        where,
+        page,
+        pageSize,
+        parameters.ToArray(),
+        out total);
+
+    Json.Write(new { success = true, data = data, total = total }, Output);
+}

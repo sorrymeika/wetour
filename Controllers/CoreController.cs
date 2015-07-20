@@ -33,12 +33,12 @@ namespace SL.Web.Controllers
                 {
                     if (!"login".Equals(handle, StringComparison.OrdinalIgnoreCase))
                     {
-                        return Json(new { success = false, msg = "请先登录" });
+                        return Json(new { success = false, msg = "请先登录" }, JsonRequestBehavior.AllowGet);
                     }
                 }
                 else if ("islogin".Equals(handle, StringComparison.OrdinalIgnoreCase))
                 {
-                    return Json(new { success = true });
+                    return Json(new { success = true }, JsonRequestBehavior.AllowGet);
                 }
             }
 

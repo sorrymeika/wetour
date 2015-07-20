@@ -26,6 +26,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -70,8 +71,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\CoreController.cs" />
-    <Compile Include="Controllers\AlipayDirectController.cs" />
-    <Compile Include="Controllers\AlipayWAPController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -113,10 +112,6 @@
     <Folder Include="upload\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Alipay\Alipay.csproj">
-      <Project>{549EB3BC-DAE5-4AD9-B717-D4AFB0911734}</Project>
-      <Name>Alipay</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SL\SL.csproj">
       <Project>{D8E09BBC-5A9D-441B-B403-988286537F2B}</Project>
       <Name>SL</Name>
@@ -127,6 +122,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\API\Manage\UMEditor.ImageUp.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\Manage\add_destination.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\destination\list.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
