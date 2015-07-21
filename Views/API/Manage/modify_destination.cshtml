@@ -2,12 +2,12 @@
 @using System.Text.RegularExpressions
 @{
     RequestUtil req = new RequestUtil();
-    string name = req.String("name", false, "请填写用户名");
-    string content = req.String("content", false, "请填写正文");
-    var middlePic = req.File("middlePic", false, "请上传图片");
-    var largePic = req.File("largePic", false, "请上传图片");
-
-    content = Regex.Replace(content, @"<script.*?>[\s\S]*</script>", "", RegexOptions.IgnoreCase);
+    int id = req.Int("id");
+    string name = req.String("name");
+    string content = req.String("content");
+    int favorite = req.Int("favorite");
+    var middlePic = req.File("middlePic");
+    var largePic = req.File("largePic");
 
     if (req.HasError)
     {
@@ -15,19 +15,51 @@
     }
     else
     {
-        string middlePicSrc = middlePic.Save();
-        string largePicSrc = largePic.Save();
+        string set = "";
+        List<object> parameters = new List<object> { id };
 
-        int id;
-        int count = SL.Data.SQL.Execute("insert into Destination (Name,Content,MiddlePic,LargePic,Favorite) values (@p0,@p1,@p2,@p3,0)", out id, name, content, middlePicSrc, largePicSrc);
-
-        if (count <= 0)
+        if (!string.IsNullOrEmpty(name))
         {
-            Json.Write(new { success = false, msg = "添加失败" }, Output);
+            set += "Name=@p" + parameters.Count;
+            parameters.Add(name);
+        }
+
+        if (!string.IsNullOrEmpty(content))
+        {
+            content = Regex.Replace(content, @"<script.*?>[\s\S]*</script>", "", RegexOptions.IgnoreCase);
+
+            set += ",Content=@p" + parameters.Count;
+            parameters.Add(content);
+        }
+
+        if (!middlePic.IsEmpty)
+        {
+            set += ",MiddlePic=@p" + parameters.Count;
+            parameters.Add(middlePic.Save());
+        }
+
+        if (!largePic.IsEmpty)
+        {
+            set += ",LargePic=@p" + parameters.Count;
+            parameters.Add(largePic.Save());
+        }
+
+        if (set == "")
+        {
+            Json.Write(new { success = false, msg = "未作修改" }, Output);
         }
         else
         {
-            Json.Write(new { success = true, msg = "添加成功", data = new { Name = name, Content = content, MiddlePic = middlePicSrc, LargePic = largePicSrc, Favorite = 0 } }, Output);
+            int count = SL.Data.SQL.Execute("update Destination set " + set.TrimStart(',') + " where ID=@p0", parameters.ToArray());
+
+            if (count <= 0)
+            {
+                Json.Write(new { success = false, msg = "修改失败" }, Output);
+            }
+            else
+            {
+                Json.Write(new { success = true, msg = "修改成功" }, Output);
+            }
         }
     }
 }
