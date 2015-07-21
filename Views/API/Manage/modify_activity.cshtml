@@ -6,8 +6,10 @@
     string name = req.String("name");
     string content = req.String("content");
     int favorite = req.Int("favorite");
-    var middlePic = req.File("middlePic");
-    var largePic = req.File("largePic");
+    var pic = req.File("pic");
+    DateTime startTime = req.DateTime("startTime");
+    DateTime finishTime = req.DateTime("finishTime");
+
 
     if (req.HasError)
     {
@@ -32,16 +34,22 @@
             parameters.Add(content);
         }
 
-        if (!middlePic.IsEmpty)
+        if (!pic.IsEmpty)
         {
-            set += ",MiddlePic=@p" + parameters.Count;
-            parameters.Add(middlePic.Save());
+            set += ",Pic=@p" + parameters.Count;
+            parameters.Add(pic.Save());
         }
 
-        if (!largePic.IsEmpty)
+        if (startTime != DateTime.MinValue)
         {
-            set += ",LargePic=@p" + parameters.Count;
-            parameters.Add(largePic.Save());
+            set += ",StartTime=@p" + parameters.Count;
+            parameters.Add(startTime);
+        }
+
+        if (finishTime != DateTime.MinValue)
+        {
+            set += ",FinishTime=@p" + parameters.Count;
+            parameters.Add(finishTime);
         }
 
         if (set == "")
@@ -50,7 +58,7 @@
         }
         else
         {
-            int count = SL.Data.SQL.Execute("update Destination set " + set.TrimStart(',') + " where ID=@p0", parameters.ToArray());
+            int count = SL.Data.SQL.Execute("update Activity set " + set.TrimStart(',') + " where ID=@p0", parameters.ToArray());
 
             if (count <= 0)
             {

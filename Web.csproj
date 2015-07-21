@@ -131,7 +131,27 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\API\Manage\delete_destination.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Views\API\Manage\modify_destination.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\destination\get.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\Manage\add_activity.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\Manage\delete_activity.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\activity\get.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\activity\list.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\Manage\modify_activity.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

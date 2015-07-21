@@ -14,3 +14,16 @@ Content varchar(max),
 MiddlePic varchar(255),
 LargePic varchar(255)
 )
+alter table Destination add Favorite int
+
+create table Activity(
+ID int identity primary key,
+Name varchar(400),
+SignUpQty int,
+Pic varchar(255),
+Address varchar(500),
+Favorite int,
+Content varchar(max),
+StartTime datetime,
+FinishTime datetime
+)

@@ -18,7 +18,7 @@ namespace SL.Web.UMEditor
         string uploadpath = null;
         string filename = null;
         string originalName = null;
-        HttpPostedFile uploadFile = null;
+        HttpPostedFileBase uploadFile = null;
 
         /**
       * 上传文件的主处理方法
@@ -28,7 +28,7 @@ namespace SL.Web.UMEditor
       *@param int
       * @return Hashtable
       */
-        public Hashtable upFile(HttpContext cxt, string pathbase, string[] filetype, int size)
+        public Hashtable upFile(HttpContextBase cxt, string pathbase, string[] filetype, int size)
         {
             pathbase = pathbase + DateTime.Now.ToString("yyyy-MM-dd") + "/";
             uploadpath = cxt.Server.MapPath(pathbase);//获取文件上传路径

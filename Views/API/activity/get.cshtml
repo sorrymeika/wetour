@@ -1,0 +1,16 @@
+﻿@using SL.Util
+@{
+    RequestUtil req = new RequestUtil();
+    int id = req.Int("id", false, "id必传");
+
+    if (req.HasError)
+    {
+        Json.Write(new { success = false, msg = req.FirstError, errors = req.GetErrors() }, Output);
+    }
+    else
+    {
+        var data = SL.Data.SQL.QuerySingle("select ID,Name,Content,StartTime,FinishTime,Pic,Favorite from Activity where ID=@p0", id);
+
+        Json.Write(new { success = true, data = data }, Output);
+    }
+}

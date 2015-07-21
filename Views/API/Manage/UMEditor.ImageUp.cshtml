@@ -13,7 +13,7 @@
     Hashtable info;
     SL.Web.UMEditor.Uploader up = new SL.Web.UMEditor.Uploader();
     info = up.upFile(this.Context, pathbase, filetype, size); //获取上传状态
-    string json = SL.Web.UMEditor.Uploader.BuildJson(info);
+    string json = Json.Encode(info);
 
     Response.ContentType = "text/html";
     if (callback != null)
