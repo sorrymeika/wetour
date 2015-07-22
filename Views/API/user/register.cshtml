@@ -1,0 +1,41 @@
+﻿@using SL.Util
+@{
+    RequestUtil req = new RequestUtil();
+    String mobile = req.String("mobile", false, "mobile必传");
+    String password = req.Password("password", "password必传");
+
+    if (req.HasError)
+    {
+        Json.Write(new { success = false, msg = req.FirstError, errors = req.GetErrors() }, Output);
+    }
+    else
+    {
+        var exists = SL.Data.SQL.Exists("select 1 from Users where Mobile=@p0", mobile);
+        if (exists)
+        {
+            Json.Write(new { success = false, msg = "账号已存在" }, Output);
+        }
+        else
+        {
+            password = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(password, "md5");
+            var auth = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(password + DateTime.Now.ToString("yyyy-MM-dd"), "md5");
+
+            int id;
+            SL.Data.SQL.Execute("insert into Users (Mobile,Password,RegisterTime,LatestLoginTime,Auth) values (@p0,@p1,@p2,@p2,@p3)", out id, mobile, password, DateTime.Now, auth);
+
+            SL.Util.CacheUtil.CreateCache("U" + id, auth);
+
+            Json.Write(new
+            {
+                success = true,
+                data = new
+                {
+                    ID = id,
+                    Mobile = mobile,
+                    NickName = "",
+                    Auth = auth
+                }
+            }, Output);
+        }
+    }
+}

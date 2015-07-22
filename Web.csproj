@@ -153,6 +153,39 @@
   <ItemGroup>
     <Content Include="Views\API\Manage\modify_activity.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\user\login.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\user\register.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\Manage\user_list.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\activity\comment_list.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\destination\comment_list.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\user\send_sms.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\activity\add_comment.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\destination\add_comment.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\user\update.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\user\update_pwd.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\user\reset_pwd.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

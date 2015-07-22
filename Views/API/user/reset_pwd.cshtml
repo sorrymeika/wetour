@@ -1,0 +1,37 @@
+﻿@using SL.Util
+@{
+    RequestUtil req = new RequestUtil();
+    String mobile = req.String("mobile", false, "mobile必传");
+    string password = req.Password("password", "password必传");
+    string smsCode = req.String("smsCode", false, "mobileCode必传");
+
+    if (req.HasError)
+    {
+        Json.Write(new { success = false, msg = req.FirstError, errors = req.GetErrors() }, Output);
+    }
+    else if (SL.Util.CacheUtil.Get<string>("SMS_" + mobile) != smsCode)
+    {
+        Json.Write(new { success = false, msg = "短信验证码不正确" }, Output);
+    }
+    else
+    {
+        var data = SL.Data.SQL.QuerySingle("select ID from Users where Mobile=@p0", mobile);
+        if (!data == null)
+        {
+            Json.Write(new { success = false, msg = "账号不存在" }, Output);
+        }
+        else
+        {
+            int count = SL.Data.SQL.Execute("update Users set password=@p1 where ID=@p0", data.ID, System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(password, "md5"));
+
+            if (count <= 0)
+            {
+                Json.Write(new { success = false, msg = "重置失败" }, Output);
+            }
+            else
+            {
+                Json.Write(new { success = true, msg = "密码重置成功" }, Output);
+            }
+        }
+    }
+}

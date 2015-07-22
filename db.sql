@@ -15,6 +15,14 @@ MiddlePic varchar(255),
 LargePic varchar(255)
 )
 alter table Destination add Favorite int
+create table DestinationComment(
+ID int identity primary key,
+DestinationID int,
+UserID int,
+Content varchar(1000),
+CommentTime datetime
+)
+alter table DestinationComment add Reply varchar(max)
 
 create table Activity(
 ID int identity primary key,
@@ -27,3 +35,30 @@ Content varchar(max),
 StartTime datetime,
 FinishTime datetime
 )
+create table ActivityComment(
+ID int identity primary key,
+ActivityID int,
+UserID int,
+Content varchar(1000),
+CommentTime datetime
+)
+alter table ActivityComment add Reply varchar(max)
+
+create table Users(
+ID int identity primary key,
+Mobile varchar(20),
+Password varchar(32),
+NickName varchar(20),
+RegisterTime datetime,
+LatestLoginTime datetime,
+Auth varchar(200)
+)
+alter table Users add Avatars varchar(255)
+
+create table UserActivity(
+ID int identity primary key,
+ActivityID int,
+UserID int,
+JoinTime datetime
+)
+

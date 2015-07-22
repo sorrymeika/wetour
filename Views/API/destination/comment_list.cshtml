@@ -1,0 +1,28 @@
+﻿@using SL.Util
+@{
+    RequestUtil req = new RequestUtil();
+    int page = req.Int("page");
+    int pageSize = req.Int("pageSize", 10);
+    int activityId = req.Int("activityId");
+
+    string where = "1=1";
+    List<object> parameters = new List<object>();
+
+    if (activityId != 0)
+    {
+        where += " and a.ActivityID=@p" + parameters.Count;
+        parameters.Add(activityId);
+    }
+
+    int total;
+    var data = SL.Data.SQL.QueryPage("ID",
+        "a.ID,a.Content,a.CommentTime,a.UserID,b.Mobile,b.NickName,b.Avatars",
+        "DestinationComment a join Users b on a.UserID=b.ID",
+        where,
+        page,
+        pageSize,
+        parameters.ToArray(),
+        out total);
+
+    Json.Write(new { success = true, data = data, total = total }, Output);
+}

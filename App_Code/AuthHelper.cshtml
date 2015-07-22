@@ -1,2 +1,17 @@
 ﻿@functions{
+    public static bool Check(int userId, string auth)
+    {
+        string cacheAuth = SL.Util.CacheUtil.Get<string>("U" + userId);
+        if (string.IsNullOrEmpty(cacheAuth))
+        {
+            cacheAuth = SL.Data.SQL.QueryValue<string>("select Auth from Users where ID=@p0", userId);
+            SL.Util.CacheUtil.CreateCache("U" + userId, cacheAuth);
+        }
+
+        if (cacheAuth != auth)
+        {
+            return false;
+        }
+        return true;
+    }
 }

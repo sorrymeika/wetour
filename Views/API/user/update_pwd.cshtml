@@ -1,0 +1,42 @@
+﻿@using SL.Util
+@{
+    RequestUtil req = new RequestUtil();
+    int userId = req.Int("userId", false, "参数错误:userId");
+    string auth = req.String("auth", false, "参数错误:auth");
+    string oldPassword = req.Password("oldPassword", "oldPassword必传");
+    string password = req.Password("password", "password必传");
+
+    if (req.HasError)
+    {
+        Json.Write(new { success = false, msg = req.FirstError, errors = req.GetErrors() }, Output);
+    }
+    else if (!AuthHelper.Check(userId, auth))
+    {
+        Json.Write(new { success = false, msg = "请重新登录" }, Output);
+    }
+    else
+    {
+        var data = SL.Data.SQL.QuerySingle("select Password from Users where ID=@p0", userId);
+        if (!data == null)
+        {
+            Json.Write(new { success = false, msg = "账号不存在" }, Output);
+        }
+        else if (System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(oldPassword, "md5") != data.Password)
+        {
+            Json.Write(new { success = false, msg = "密码不正确" }, Output);
+        }
+        else
+        {
+            int count = SL.Data.SQL.Execute("update Users set password=@p1 where ID=@p0", userId, System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(password, "md5"));
+
+            if (count <= 0)
+            {
+                Json.Write(new { success = false, msg = "修改失败" }, Output);
+            }
+            else
+            {
+                Json.Write(new { success = true, msg = "修改成功" }, Output);
+            }
+        }
+    }
+}
