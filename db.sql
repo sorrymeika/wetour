@@ -62,3 +62,9 @@ UserID int,
 JoinTime datetime
 )
 
+create table Recommend(
+ID int identity primary key,
+RelativeID int,
+Type int,
+Sort int
+)

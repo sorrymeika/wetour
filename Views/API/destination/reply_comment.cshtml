@@ -35,7 +35,12 @@
                     reply = Json.Decode<List<Dictionary<string, object>>>(data.Reply);
                 }
 
-                db.Execute("update DestinationComment (DestinationID,UserID,Content,CommentTime) values (@p0,@p1,@p2,@p3)", activityId, userId, HttpUtility.HtmlEncode(content), DateTime.Now);
+                reply.Add(new Dictionary<string, object> {
+                    { "UserID",userId },
+                    { "Content", content }
+                });
+
+                db.Execute("update DestinationComment Reply=@p1 where ID=@p0", id, Json.Encode(reply));
 
                 Json.Write(new { success = true }, Output);
             }
