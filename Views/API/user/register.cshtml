@@ -3,10 +3,15 @@
     RequestUtil req = new RequestUtil();
     String mobile = req.String("mobile", false, "mobile必传");
     String password = req.Password("password", "password必传");
+    string smsCode = req.String("smsCode", false, "smsCode必传");
 
     if (req.HasError)
     {
         Json.Write(new { success = false, msg = req.FirstError, errors = req.GetErrors() }, Output);
+    }
+    else if (SL.Util.CacheUtil.Get<string>("SMS_" + mobile) != smsCode)
+    {
+        Json.Write(new { success = false, msg = "短信验证码不正确" }, Output);
     }
     else
     {

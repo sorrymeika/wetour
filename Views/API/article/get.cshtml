@@ -1,0 +1,21 @@
+﻿@using SL.Util
+@{
+    RequestUtil req = new RequestUtil();
+    int id = req.Int("id", false, "id必传");
+
+    if (req.HasError)
+    {
+        Json.Write(new { success = false, msg = req.FirstError, errors = req.GetErrors() }, Output);
+    }
+    else
+    {
+        var data = SL.Data.SQL.QuerySingle("select ID,RelativeID,Title,SubTitle,Pic,Price,SpecialPrice,CategoryID,Content,Content1,Content2,Content3,Sort from Article where ID=@p0", id);
+
+        if (data != null)
+        {
+            data.Pic = RequestFile.FullUrl(data.Pic);
+        }
+
+        Json.Write(new { success = true, data = data }, Output);
+    }
+}

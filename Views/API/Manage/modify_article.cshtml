@@ -1,0 +1,113 @@
+﻿@using SL.Util
+@using System.Text.RegularExpressions
+@{
+    RequestUtil req = new RequestUtil();
+    int id = req.Int("id");
+    int relativeID = req.Int("RelativeID");
+    string title = req.String("title");
+    string subTitle = req.String("subTitle");
+    string content = req.String("content");
+    string content1 = req.String("content1");
+    string content2 = req.String("content2");
+    string content3 = req.String("content3");
+    var pic = req.File("pic");
+    Decimal price = req.Decimal("price", defaultValue: -1);
+    Decimal specialPrice = req.Decimal("specialPrice", defaultValue: -1);
+    int sort = req.Int("sort");
+
+    if (req.HasError)
+    {
+        Json.Write(new { success = false, msg = req.FirstError, errors = req.GetErrors() }, Output);
+    }
+    else
+    {
+        string set = "";
+        List<object> parameters = new List<object> { id };
+
+        if (!string.IsNullOrEmpty(title))
+        {
+            set += "Title=@p" + parameters.Count;
+            parameters.Add(title);
+        }
+
+        if (!string.IsNullOrEmpty(subTitle))
+        {
+            set += ",SubTitle=@p" + parameters.Count;
+            parameters.Add(title);
+        }
+        if (relativeID != -1)
+        {
+            set += ",RelativeID=@p" + parameters.Count;
+            parameters.Add(relativeID);
+        }
+
+        if (price != -1)
+        {
+            set += ",Price=@p" + parameters.Count;
+            parameters.Add(price);
+        }
+
+        if (specialPrice != -1)
+        {
+            set += ",SpecialPrice=@p" + parameters.Count;
+            parameters.Add(specialPrice);
+        }
+        if (!string.IsNullOrEmpty(content))
+        {
+            content = Regex.Replace(content, @"<script.*?>[\s\S]*</script>", "", RegexOptions.IgnoreCase);
+
+            set += ",Content=@p" + parameters.Count;
+            parameters.Add(content);
+        }
+
+
+        if (content1 != null)
+        {
+            content1 = Regex.Replace(content1, @"<script.*?>[\s\S]*</script>", "", RegexOptions.IgnoreCase);
+
+            set += ",Content1=@p" + parameters.Count;
+            parameters.Add(content1);
+        }
+
+        if (content2 != null)
+        {
+            content2 = Regex.Replace(content2, @"<script.*?>[\s\S]*</script>", "", RegexOptions.IgnoreCase);
+
+            set += ",Content2=@p" + parameters.Count;
+            parameters.Add(content2);
+        }
+
+        if (content3 != null)
+        {
+            content = Regex.Replace(content3, @"<script.*?>[\s\S]*</script>", "", RegexOptions.IgnoreCase);
+
+            set += ",Content3=@p" + parameters.Count;
+            parameters.Add(content3);
+        }
+
+
+        if (!pic.IsEmpty)
+        {
+            set += ",Pic=@p" + parameters.Count;
+            parameters.Add(pic.Save());
+        }
+
+        if (set == "")
+        {
+            Json.Write(new { success = false, msg = "未作修改" }, Output);
+        }
+        else
+        {
+            int count = SL.Data.SQL.Execute("update Article set " + set.TrimStart(',') + " where ID=@p0", parameters.ToArray());
+
+            if (count <= 0)
+            {
+                Json.Write(new { success = false, msg = "修改失败" }, Output);
+            }
+            else
+            {
+                Json.Write(new { success = true, msg = "修改成功" }, Output);
+            }
+        }
+    }
+}

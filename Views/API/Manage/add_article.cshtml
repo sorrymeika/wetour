@@ -1,0 +1,39 @@
+﻿@using SL.Util
+@using System.Text.RegularExpressions
+@{
+    RequestUtil req = new RequestUtil();
+    int relativeId = req.Int("RelativeID");
+    string title = req.String("Title", false, "请填写Title");
+    string subTitle = req.String("SubTitle", false, "请填写SubTitle");
+    string content = req.String("content", false, "请填写正文");
+    string content1 = req.String("content1");
+    string content2 = req.String("content2");
+    string content3 = req.String("content3");
+    var pic = req.File("pic", false, "请上传图片");
+    Decimal price = req.Decimal("Price");
+    Decimal specialPrice = req.Decimal("SpecialPrice");
+    int sort = req.Int("sort");
+
+    content = Regex.Replace(content, @"<script.*?>[\s\S]*</script>", "", RegexOptions.IgnoreCase);
+
+    if (req.HasError)
+    {
+        Json.Write(new { success = false, msg = req.FirstError, errors = req.GetErrors() }, Output);
+    }
+    else
+    {
+        string picSrc = pic.Save();
+
+        int id;
+        int count = SL.Data.SQL.Execute("insert into Article (RelativeID,Title,SubTitle,Pic,Price,SpecialPrice,CategoryID,Content,Content1,Content2,Content3,Sort) values (@p0,@p1,@p2,@p3,@p4,@p5,0,@p6,@p7,@p8,@p9,@p10)", out id, relativeId, title, subTitle, picSrc, price, specialPrice, content, content1, content2, content3, sort);
+
+        if (count <= 0)
+        {
+            Json.Write(new { success = false, msg = "添加失败" }, Output);
+        }
+        else
+        {
+            Json.Write(new { success = true, msg = "添加成功" }, Output);
+        }
+    }
+}

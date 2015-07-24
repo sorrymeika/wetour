@@ -198,6 +198,21 @@
   <ItemGroup>
     <Content Include="Views\API\Manage\delete_recommend.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\Manage\add_article.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\Manage\modify_article.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\Manage\delete_acticle.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\article\list.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\article\get.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

@@ -72,3 +72,28 @@ RelativeID int,
 Type int,
 Sort int
 )
+
+create table Article(
+ID int identity primary key,
+RelativeID int,
+Title varchar(200),
+SubTitle varchar(200),
+Pic varchar(255),
+Price decimal,
+SpecialPrice decimal,
+CategoryID int,
+Content varchar(max),
+Content1 varchar(4000),
+Content2 varchar(4000),
+Content3 varchar(4000),
+Sort int
+)
+
+create table Quan(
+ID int identity primary key,
+UserID int,
+Content varchar(1000),
+Pictures varchar(1000),
+InsertTime datetime,
+Reply varchar(max)
+)
