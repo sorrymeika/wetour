@@ -192,6 +192,12 @@
   <ItemGroup>
     <Content Include="Views\API\destination\reply_comment.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\activity\recommend.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\Manage\delete_recommend.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

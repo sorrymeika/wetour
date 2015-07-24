@@ -1,0 +1,25 @@
+﻿@using SL.Util
+@using System.Text.RegularExpressions
+@{
+    RequestUtil req = new RequestUtil();
+    int id = req.Int("id", false, "参数错误");
+
+
+    if (req.HasError)
+    {
+        Json.Write(new { success = false, msg = req.FirstError, errors = req.GetErrors() }, Output);
+    }
+    else
+    {
+        int count = SL.Data.SQL.Execute("delete from Recommend where ID=@p0", id);
+
+        if (count <= 0)
+        {
+            Json.Write(new { success = false, msg = "删除失败" }, Output);
+        }
+        else
+        {
+            Json.Write(new { success = true, msg = "删除成功" }, Output);
+        }
+    }
+}

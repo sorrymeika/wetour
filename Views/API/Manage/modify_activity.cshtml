@@ -9,7 +9,7 @@
     var pic = req.File("pic");
     DateTime startTime = req.DateTime("startTime");
     DateTime finishTime = req.DateTime("finishTime");
-
+    string strIsRecommend = req.String("isRecommend");
 
     if (req.HasError)
     {
@@ -24,6 +24,19 @@
         {
             set += "Name=@p" + parameters.Count;
             parameters.Add(name);
+        }
+
+        if (!string.IsNullOrEmpty(strIsRecommend))
+        {
+            var isRecommend = req.Bool("isRecommend");
+            set += "IsRecommend=@p" + parameters.Count;
+            parameters.Add(isRecommend);
+
+            SL.Data.SQL.Execute("delete from Recommend where RelativeID=@p0 and Type=0", id);
+            if (isRecommend)
+            {
+                SL.Data.SQL.Execute("insert into Recommend (RelativeID,Type) values (@p0,@p1)", id, 1);
+            }
         }
 
         if (!string.IsNullOrEmpty(content))

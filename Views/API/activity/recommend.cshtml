@@ -1,0 +1,47 @@
+﻿@using SL.Util
+@{
+    RequestUtil req = new RequestUtil();
+    int page = req.Int("page");
+    int pageSize = req.Int("pageSize", 10);
+    string keywords = req.String("keywords");
+
+    string where = "1=1";
+    List<object> parameters = new List<object>();
+
+    if (!string.IsNullOrEmpty(keywords))
+    {
+        where += " and Name like '%'+@p0+'%'";
+        parameters.Add(keywords);
+    }
+
+    using (SL.Data.Database db = SL.Data.Database.Open())
+    {
+
+        int total;
+        var data = db.QueryPage("ID",
+            "ID,RelativeID,Type",
+            "Recommend",
+            where,
+            page,
+            pageSize,
+            parameters.ToArray(),
+            out total,
+            new Dictionary<string, bool> { { "Sort", false } });
+
+        if (data != null)
+        {
+            for (int i = 0; i < data.Count; i++)
+            {
+                var item = data[i];
+                var info = db.QuerySingle(item.Type == 0 ? "select ID,Name,MiddlePic as Pic,Favorite from Destination where ID=@p0" : "select ID,Name,Pic,Favorite from Activity where ID=@p0", item.RelativeID);
+
+                item.ID = info.ID;
+                item.Name = info.Name;
+                item.Pic = RequestFile.FullUrl(info.Pic);
+                item.Favorite = info.Favorite;
+            }
+        }
+
+        Json.Write(new { success = true, data = data, total = total }, Output);
+    }
+}

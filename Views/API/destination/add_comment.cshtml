@@ -19,7 +19,7 @@
         List<object> parameters = new List<object>();
 
         int id;
-        var data = SL.Data.SQL.Execute("insert into DestinationComment (ActivityID,UserID,Content,CommentTime) values (@p0,@p1,@p2,@p3)", out id, activityId, userId, HttpUtility.HtmlEncode(content), DateTime.Now);
+        var data = SL.Data.SQL.Execute("insert into DestinationComment (ActivityID,UserID,Content,CommentTime,isRecommend) values (@p0,@p1,@p2,@p3,@p4)", out id, activityId, userId, HttpUtility.HtmlEncode(content), DateTime.Now);
 
         Json.Write(new { success = true, id = id }, Output);
     }

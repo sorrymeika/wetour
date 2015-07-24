@@ -15,14 +15,34 @@
     }
 
     int total;
-    var data = SL.Data.SQL.QueryPage("ID",
-        "ID,Name,Content,MiddlePic,LargePic,Favorite",
-        "Destination",
-        where,
-        page,
-        pageSize,
-        parameters.ToArray(),
-        out total);
+    dynamic data;
+
+    if (req.Int("getall") == 1)
+    {
+        total = 10;
+        data = SL.Data.SQL.Query("select ID,Name,MiddlePic,LargePic,Favorite,IsRecommend from Destination");
+    }
+    else
+    {
+        data = SL.Data.SQL.QueryPage("ID",
+                "ID,Name,MiddlePic,LargePic,Favorite,IsRecommend",
+                "Destination",
+                where,
+                page,
+                pageSize,
+                parameters.ToArray(),
+                out total);
+    }
+
+    if (data != null)
+    {
+        for (int i = 0; i < data.Count; i++)
+        {
+            var item = data[i];
+            item.MiddlePic = RequestFile.FullUrl(item.MiddlePic);
+            item.LargePic = RequestFile.FullUrl(item.LargePic);
+        }
+    }
 
     Json.Write(new { success = true, data = data, total = total }, Output);
 }

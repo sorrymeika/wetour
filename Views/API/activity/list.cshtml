@@ -16,13 +16,22 @@
 
     int total;
     var data = SL.Data.SQL.QueryPage("ID",
-        "ID,Name,Content,StartTime,FinishTime,Pic,Favorite",
+        "ID,Name,StartTime,FinishTime,Pic,Favorite,IsRecommend",
         "Activity",
         where,
         page,
         pageSize,
         parameters.ToArray(),
         out total);
+
+    if (data != null)
+    {
+        for (int i = 0; i < data.Count; i++)
+        {
+            var item = data[i];
+            item.Pic = RequestFile.FullUrl(item.Pic);
+        }
+    }
 
     Json.Write(new { success = true, data = data, total = total }, Output);
 }

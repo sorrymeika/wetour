@@ -9,7 +9,13 @@
     }
     else
     {
-        var data = SL.Data.SQL.QuerySingle("select ID,Name,Content,MiddlePic,LargePic,Favorite from Destination where ID=@p0", id);
+        var data = SL.Data.SQL.QuerySingle("select ID,Name,Content,MiddlePic,LargePic,Favorite,IsRecommend from Destination where ID=@p0", id);
+
+        if (data != null)
+        {
+            data.MiddlePic = RequestFile.FullUrl(data.MiddlePic);
+            data.LargePic = RequestFile.FullUrl(data.LargePic);
+        }
 
         Json.Write(new { success = true, data = data }, Output);
     }

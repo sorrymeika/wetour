@@ -6,6 +6,7 @@
     string content = req.String("content", false, "请填写正文");
     var middlePic = req.File("middlePic", false, "请上传图片");
     var largePic = req.File("largePic", false, "请上传图片");
+    bool isRecommend = req.Bool("isRecommend");
 
     content = Regex.Replace(content, @"<script.*?>[\s\S]*</script>", "", RegexOptions.IgnoreCase);
 
@@ -19,7 +20,7 @@
         string largePicSrc = largePic.Save();
 
         int id;
-        int count = SL.Data.SQL.Execute("insert into Destination (Name,Content,MiddlePic,LargePic,Favorite) values (@p0,@p1,@p2,@p3,0)", out id, name, content, middlePicSrc, largePicSrc);
+        int count = SL.Data.SQL.Execute("insert into Destination (Name,Content,MiddlePic,LargePic,Favorite,isRecommend) values (@p0,@p1,@p2,@p3,0,@p4)", out id, name, content, middlePicSrc, largePicSrc, isRecommend);
 
         if (count <= 0)
         {
@@ -27,6 +28,11 @@
         }
         else
         {
+            if (isRecommend)
+            {
+                SL.Data.SQL.Execute("insert into Recommend (RelativeID,Type) values (@p0,@p1)", id, 0);
+            }
+
             Json.Write(new { success = true, msg = "添加成功", data = new { Name = name, Content = content, MiddlePic = middlePicSrc, LargePic = largePicSrc, Favorite = 0 } }, Output);
         }
     }

@@ -15,6 +15,8 @@ MiddlePic varchar(255),
 LargePic varchar(255)
 )
 alter table Destination add Favorite int
+alter table Destination add IsRecommend bit
+
 create table DestinationComment(
 ID int identity primary key,
 DestinationID int,
@@ -35,6 +37,8 @@ Content varchar(max),
 StartTime datetime,
 FinishTime datetime
 )
+alter table Activity add IsRecommend bit
+
 create table ActivityComment(
 ID int identity primary key,
 ActivityID int,
