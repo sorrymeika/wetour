@@ -11,7 +11,7 @@
     else
     {
         var data = SL.Data.SQL.QuerySingle("select ID,Password,NickName,Avatars from Users where Mobile=@p0", mobile);
-        if (!data == null)
+        if (data == null)
         {
             Json.Write(new { success = false, msg = "账号不存在" }, Output);
         }
