@@ -213,6 +213,12 @@
   <ItemGroup>
     <Content Include="Views\API\article\get.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\quan\list.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\API\user\get.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

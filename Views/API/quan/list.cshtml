@@ -1,0 +1,51 @@
+﻿@using SL.Util
+@{
+    RequestUtil req = new RequestUtil();
+    int page = req.Int("page");
+    int pageSize = req.Int("pageSize", 10);
+    string keywords = req.String("keywords");
+
+    string where = "1=1";
+    List<object> parameters = new List<object>();
+
+    if (!string.IsNullOrEmpty(keywords))
+    {
+        where += " and Name like '%'+@p0+'%'";
+        parameters.Add(keywords);
+    }
+
+    int total;
+    var data = SL.Data.SQL.QueryPage("ID",
+        "a.ID,a.Content,a.Pictures,a.InsertTime,a.Reply,a.Up,b.Mobile,b.NickName,b.Avatars",
+        "Quan a join Users b on a.UserID=b.ID",
+        where,
+        page,
+        pageSize,
+        parameters.ToArray(),
+        out total);
+
+    if (data != null)
+    {
+        for (int i = 0; i < data.Count; i++)
+        {
+            var item = data[i];
+            item.Avatars = RequestFile.FullUrl(item.Avatars);
+
+            if (!string.IsNullOrEmpty(item.Pictures))
+            {
+                item.Pictures = Json.Decode<List<Dictionary<string, object>>>(item.Pictures);
+            }
+            if (!string.IsNullOrEmpty(item.Pictures))
+            {
+                item.Reply = Json.Decode<List<Dictionary<string, object>>>(item.Reply);
+                item.Comments = item.Reply.Count;
+            }
+            else
+            {
+                item.Comments = 0;
+            }
+        }
+    }
+
+    Json.Write(new { success = true, data = data, total = total }, Output);
+}

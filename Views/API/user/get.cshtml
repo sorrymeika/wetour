@@ -1,0 +1,28 @@
+﻿@using SL.Util
+@{
+    RequestUtil req = new RequestUtil();
+    int userId = req.Int("id", false, "参数错误:id");
+    string auth = req.String("auth", false, "参数错误:auth");
+
+    if (req.HasError)
+    {
+        Json.Write(new { success = false, msg = req.FirstError, errors = req.GetErrors() }, Output);
+    }
+    else if (!AuthHelper.Check(userId, auth))
+    {
+        Json.Write(new { success = false, msg = "请重新登录" }, Output);
+    }
+    else
+    {
+        var data = SL.Data.SQL.QuerySingle("select * from Users where ID=@p0", userId);
+        if (data == null)
+        {
+            Json.Write(new { success = false, msg = "账号不存在" }, Output);
+        }
+        else
+        {
+            data.Avatars = RequestFile.FullUrl(data.Avatars);
+            Json.Write(new { success = true, data = data }, Output);
+        }
+    }
+}

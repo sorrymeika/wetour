@@ -17,7 +17,7 @@
     else
     {
         var data = SL.Data.SQL.QuerySingle("select Password from Users where ID=@p0", userId);
-        if (!data == null)
+        if (data == null)
         {
             Json.Write(new { success = false, msg = "账号不存在" }, Output);
         }

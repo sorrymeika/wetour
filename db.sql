@@ -58,6 +58,8 @@ LatestLoginTime datetime,
 Auth varchar(200)
 )
 alter table Users add Avatars varchar(255)
+alter table Users add Address varchar(500)
+alter table Users add Gender bit
 
 create table UserActivity(
 ID int identity primary key,
@@ -95,5 +97,6 @@ UserID int,
 Content varchar(1000),
 Pictures varchar(1000),
 InsertTime datetime,
+Up int,
 Reply varchar(max)
 )
