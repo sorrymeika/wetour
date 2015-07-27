@@ -1,0 +1,6 @@
+﻿@using SL.Util
+@{
+    var data = SL.Data.SQL.Query("select * from Article order by Sort desc");
+
+    Json.Write(new { success = true, data = data }, Output);
+}

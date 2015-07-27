@@ -11,9 +11,12 @@
     string content2 = req.String("content2");
     string content3 = req.String("content3");
     var pic = req.File("pic");
+    var pic1 = req.File("pic1");
     Decimal price = req.Decimal("price", defaultValue: -1);
     Decimal specialPrice = req.Decimal("specialPrice", defaultValue: -1);
     int sort = req.Int("sort");
+    string teachingAge = req.String("TeachingAge");
+    string praiseRate = req.String("PraiseRate");
 
     if (req.HasError)
     {
@@ -34,6 +37,18 @@
         {
             set += ",SubTitle=@p" + parameters.Count;
             parameters.Add(title);
+        }
+
+        if (!string.IsNullOrEmpty(teachingAge))
+        {
+            set += ",TeachingAge=@p" + parameters.Count;
+            parameters.Add(teachingAge);
+        }
+
+        if (!string.IsNullOrEmpty(praiseRate))
+        {
+            set += ",PraiseRate=@p" + parameters.Count;
+            parameters.Add(praiseRate);
         }
         if (relativeID != -1)
         {
@@ -59,7 +74,6 @@
             set += ",Content=@p" + parameters.Count;
             parameters.Add(content);
         }
-
 
         if (content1 != null)
         {
@@ -90,6 +104,12 @@
         {
             set += ",Pic=@p" + parameters.Count;
             parameters.Add(pic.Save());
+        }
+
+        if (!pic1.IsEmpty)
+        {
+            set += ",Pic1=@p" + parameters.Count;
+            parameters.Add(pic1.Save());
         }
 
         if (set == "")

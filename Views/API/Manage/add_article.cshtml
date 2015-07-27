@@ -9,7 +9,10 @@
     string content1 = req.String("content1");
     string content2 = req.String("content2");
     string content3 = req.String("content3");
+    string teachingAge = req.String("TeachingAge");
+    string praiseRate = req.String("PraiseRate");
     var pic = req.File("pic", false, "请上传图片");
+    var pic1 = req.File("pic1");
     Decimal price = req.Decimal("Price");
     Decimal specialPrice = req.Decimal("SpecialPrice");
     int sort = req.Int("sort");
@@ -23,9 +26,10 @@
     else
     {
         string picSrc = pic.Save();
+        string pic1Src = pic1.IsEmpty ? null : pic1.Save();
 
         int id;
-        int count = SL.Data.SQL.Execute("insert into Article (RelativeID,Title,SubTitle,Pic,Price,SpecialPrice,CategoryID,Content,Content1,Content2,Content3,Sort) values (@p0,@p1,@p2,@p3,@p4,@p5,0,@p6,@p7,@p8,@p9,@p10)", out id, relativeId, title, subTitle, picSrc, price, specialPrice, content, content1, content2, content3, sort);
+        int count = SL.Data.SQL.Execute("insert into Article (RelativeID,Title,SubTitle,Pic,Price,SpecialPrice,CategoryID,Content,Content1,Content2,Content3,Sort,Pic1,TeachingAge,PraiseRate) values (@p0,@p1,@p2,@p3,@p4,@p5,0,@p6,@p7,@p8,@p9,@p10,@p11,@p12,@p13)", out id, relativeId, title, subTitle, picSrc, price, specialPrice, content, content1, content2, content3, sort, pic1Src, teachingAge, praiseRate);
 
         if (count <= 0)
         {

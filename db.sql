@@ -90,6 +90,10 @@ Content2 varchar(4000),
 Content3 varchar(4000),
 Sort int
 )
+alter table Article add Pic1 varchar(255)
+alter table Article add TeachingAge varchar(10)
+alter table Article add PraiseRate varchar(10)
+
 
 create table Quan(
 ID int identity primary key,
