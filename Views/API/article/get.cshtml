@@ -9,7 +9,7 @@
     }
     else
     {
-        var data = SL.Data.SQL.QuerySingle("select ID,RelativeID,Title,SubTitle,Pic,Price,SpecialPrice,CategoryID,Content,Content1,Content2,Content3,Sort from Article where ID=@p0", id);
+        var data = SL.Data.SQL.QuerySingle("select * from Article where ID=@p0", id);
 
         if (data != null)
         {
