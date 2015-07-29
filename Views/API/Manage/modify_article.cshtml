@@ -36,7 +36,7 @@
         if (!string.IsNullOrEmpty(subTitle))
         {
             set += ",SubTitle=@p" + parameters.Count;
-            parameters.Add(title);
+            parameters.Add(subTitle);
         }
 
         if (!string.IsNullOrEmpty(teachingAge))
