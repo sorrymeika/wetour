@@ -315,6 +315,7 @@
   <ItemGroup>
     <None Include="Properties\PublishProfiles\Static.pubxml" />
     <Content Include="Views\API\article\listall.cshtml" />
+    <Content Include="Views\API\article\a.html" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
