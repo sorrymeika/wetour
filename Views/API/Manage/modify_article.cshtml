@@ -17,6 +17,7 @@
     int sort = req.Int("sort");
     string teachingAge = req.String("TeachingAge");
     string praiseRate = req.String("PraiseRate");
+    string type = req.String("type");
 
     if (req.HasError)
     {
@@ -27,9 +28,15 @@
         string set = "";
         List<object> parameters = new List<object> { id };
 
+        if (!string.IsNullOrEmpty(type))
+        {
+            set += "[Type]=@p" + parameters.Count;
+            parameters.Add(req.Int("type"));
+        }
+
         if (!string.IsNullOrEmpty(title))
         {
-            set += "Title=@p" + parameters.Count;
+            set += ",Title=@p" + parameters.Count;
             parameters.Add(title);
         }
 

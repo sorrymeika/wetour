@@ -1,6 +1,8 @@
 ﻿@using SL.Util
 @{
-    var data = SL.Data.SQL.Query("select * from Article order by Sort desc");
+    RequestUtil req = new RequestUtil();
+    int type = req.Int("type");
+    var data = SL.Data.SQL.Query("select * from Article where Type=@p0 order by Sort desc", type);
 
     Json.Write(new { success = true, data = data }, Output);
 }

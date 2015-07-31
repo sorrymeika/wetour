@@ -3,6 +3,7 @@
 @{
     RequestUtil req = new RequestUtil();
     int relativeId = req.Int("RelativeID");
+    int type = req.Int("Type");
     string title = req.String("Title", false, "请填写Title");
     string subTitle = req.String("SubTitle", false, "请填写SubTitle");
     string content = req.String("content", false, "请填写正文");
@@ -29,7 +30,7 @@
         string pic1Src = pic1.IsEmpty ? null : pic1.Save();
 
         int id;
-        int count = SL.Data.SQL.Execute("insert into Article (RelativeID,Title,SubTitle,Pic,Price,SpecialPrice,CategoryID,Content,Content1,Content2,Content3,Sort,Pic1,TeachingAge,PraiseRate) values (@p0,@p1,@p2,@p3,@p4,@p5,0,@p6,@p7,@p8,@p9,@p10,@p11,@p12,@p13)", out id, relativeId, title, subTitle, picSrc, price, specialPrice, content, content1, content2, content3, sort, pic1Src, teachingAge, praiseRate);
+        int count = SL.Data.SQL.Execute("insert into Article (RelativeID,Title,SubTitle,Pic,Price,SpecialPrice,CategoryID,Content,Content1,Content2,Content3,Sort,Pic1,TeachingAge,PraiseRate,[Type]) values (@p0,@p1,@p2,@p3,@p4,@p5,0,@p6,@p7,@p8,@p9,@p10,@p11,@p12,@p13,@p14)", out id, relativeId, title, subTitle, picSrc, price, specialPrice, content, content1, content2, content3, sort, pic1Src, teachingAge, praiseRate,type);
 
         if (count <= 0)
         {
