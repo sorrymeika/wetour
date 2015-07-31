@@ -95,6 +95,8 @@ alter table Article add TeachingAge varchar(10)
 alter table Article add PraiseRate varchar(10)
 alter table Article add [Type] int
 
+select * from Article
+
 
 create table Quan(
 ID int identity primary key,
