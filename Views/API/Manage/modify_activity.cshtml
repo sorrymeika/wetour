@@ -5,6 +5,7 @@
     int id = req.Int("id");
     string name = req.String("name");
     string content = req.String("content");
+    string address = req.String("address");
     int favorite = req.Int("favorite");
     var pic = req.File("pic");
     DateTime startTime = req.DateTime("startTime");
@@ -24,6 +25,12 @@
         {
             set += "Name=@p" + parameters.Count;
             parameters.Add(name);
+        }
+
+        if (!string.IsNullOrEmpty(address))
+        {
+            set += ",Address=@p" + parameters.Count;
+            parameters.Add(address);
         }
 
         if (!string.IsNullOrEmpty(strIsRecommend))

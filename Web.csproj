@@ -315,6 +315,11 @@
   <ItemGroup>
     <None Include="Properties\PublishProfiles\Static.pubxml" />
     <Content Include="Views\API\article\listall.cshtml" />
+    <Content Include="Views\API\quan\add_comment.cshtml" />
+    <Content Include="Views\API\quan\reply.cshtml" />
+    <Content Include="Views\API\activity\signup.cshtml" />
+    <Content Include="Views\API\user\comment_list.cshtml" />
+    <Content Include="Views\API\user\activity_list.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

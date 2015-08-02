@@ -37,7 +37,8 @@
 
                 reply.Add(new Dictionary<string, object> {
                     { "UserID",userId },
-                    { "Content", content }
+                    { "Content", content },
+                    { "InsertTime", DateTime.Now }
                 });
 
                 db.Execute("update DestinationComment Reply=@p1 where ID=@p0", id, Json.Encode(reply));
