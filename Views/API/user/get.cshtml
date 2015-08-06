@@ -1,7 +1,7 @@
 ﻿@using SL.Util
 @{
     RequestUtil req = new RequestUtil();
-    int userId = req.Int("id", false, "参数错误:id");
+    int userId = req.Int("userid", false, "参数错误:userid");
     string auth = req.String("auth", false, "参数错误:auth");
 
     if (req.HasError)
