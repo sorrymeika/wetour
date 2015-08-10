@@ -1,0 +1,84 @@
+﻿@using SL.Util
+@{
+    RequestUtil req = new RequestUtil();
+    int page = req.Int("page");
+    int pageSize = req.Int("pageSize", 10);
+    string keywords = req.String("keywords");
+    int userId = req.Int("userId", false, "参数错误:userId");
+    string auth = req.String("auth", false, "参数错误:auth");
+    if (req.HasError)
+    {
+        Json.Write(new { success = false, msg = req.FirstError, errors = req.GetErrors() }, Output);
+    }
+    else if (!AuthHelper.Check(userId, auth))
+    {
+        Json.Write(new { success = false, msg = "请重新登录" }, Output);
+    }
+    else
+    {
+        string where = "UserID=@p0";
+        List<object> parameters = new List<object>() { userId };
+
+        if (!string.IsNullOrEmpty(keywords))
+        {
+            where += " and Content like '%'+@p0+'%'";
+            parameters.Add(keywords);
+        }
+
+        int total;
+        var data = SL.Data.SQL.QueryPage("ID",
+            "a.ID,a.Content,a.Pictures,a.InsertTime,a.Reply,a.Up,b.Mobile,b.NickName,b.Avatars",
+            "Quan a join Users b on a.UserID=b.ID",
+            where,
+            page,
+            pageSize,
+            parameters.ToArray(),
+            out total);
+
+        if (data != null)
+        {
+            for (int i = 0; i < data.Count; i++)
+            {
+                var item = data[i];
+                item.Avatars = RequestFile.FullUrl(item.Avatars);
+
+                if (!string.IsNullOrEmpty(item.Pictures))
+                {
+                    item.Pictures = Json.Decode<List<Dictionary<string, object>>>(item.Pictures);
+                    for (int j = 0; j < item.Pictures.Count; j++)
+                    {
+                    }
+                }
+                if (!string.IsNullOrEmpty(item.Reply))
+                {
+                    item.Reply = Json.Decode<List<Dictionary<string, object>>>(item.Reply);
+                    item.Comments = item.Reply.Count;
+                    if (item.Reply.Count != 0)
+                    {
+                        using (SL.Data.Database db = SL.Data.Database.Open())
+                        {
+                            for (int j = 0; j < item.Reply.Count; j++)
+                            {
+                                var reply = item.Reply[j];
+                                int uid = (int)reply["UserID"];
+                                var user = db.QuerySingle("select Mobile,NickName,Avatars from Users where ID=@p0", uid);
+                                user.Mobile = user.Mobile.Substring(0, 3) + "****" + user.Mobile.Substring(7, 4);
+
+                                reply["Mobile"] = user.Mobile;
+                                reply["NickName"] = user.NickName;
+                                reply["Avatars"] = RequestFile.FullUrl(user.Avatars);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    item.Comments = 0;
+                }
+            }
+        }
+
+        Json.Write(new { success = true, data = data, total = total }, Output);
+    }
+}
+

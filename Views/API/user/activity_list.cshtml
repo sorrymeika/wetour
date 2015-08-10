@@ -1,0 +1,65 @@
+﻿@using SL.Util
+@{
+    RequestUtil req = new RequestUtil();
+    int page = req.Int("page");
+    int pageSize = req.Int("pageSize", 10);
+    string keywords = req.String("keywords");
+    int userId = req.Int("userId", false, "参数错误:userId");
+    string auth = req.String("auth", false, "参数错误:auth");
+    if (req.HasError)
+    {
+        Json.Write(new { success = false, msg = req.FirstError, errors = req.GetErrors() }, Output);
+    }
+    else if (!AuthHelper.Check(userId, auth))
+    {
+        Json.Write(new { success = false, msg = "请重新登录" }, Output);
+    }
+    else
+    {
+        string where = "UserID=@p0";
+        List<object> parameters = new List<object>() { userId };
+
+        if (!string.IsNullOrEmpty(keywords))
+        {
+            where += " and Content like '%'+@p0+'%'";
+            parameters.Add(keywords);
+        }
+
+        int total;
+        var data = SL.Data.SQL.QueryPage("ID",
+            "a.ID,a.Name,StartTime,FinishTime,JoinTime",
+            "Activity a join UserActivity b on a.ID=b.ActivityID",
+            where,
+            page,
+            pageSize,
+            parameters.ToArray(),
+            out total);
+
+        if (data != null)
+        {
+            for (int i = 0; i < data.Count; i++)
+            {
+                var item = data[i];
+                var now = DateTime.Now;
+
+                if (item.StartTime > now && now < item.FinishTime)
+                {
+                    item.Status = "进行中";
+                    item.StatusID = 1;
+                }
+                else if (now < item.StartTime)
+                {
+                    item.Status = "未开始";
+                    item.StatusID = 0;
+                }
+                else
+                {
+                    item.Status = "已结束";
+                    item.StatusID = 0;
+                }
+            }
+        }
+
+        Json.Write(new { success = true, data = data, total = total }, Output);
+    }
+}

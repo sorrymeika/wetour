@@ -5,6 +5,7 @@
     string auth = req.String("auth", false, "参数错误:auth");
     string nickName = req.String("nickName");
     string address = req.String("address");
+    bool gender = req.Bool("gender");
     var avatars = req.File("avatars");
 
     if (req.HasError)
@@ -27,9 +28,13 @@
         }
         if (!string.IsNullOrEmpty(address))
         {
-            set += "Address=@p" + parameters.Count;
+            set += ",Address=@p" + parameters.Count;
             parameters.Add(address);
         }
+
+        set += ",Gender=@p" + parameters.Count;
+        parameters.Add(gender);
+
         if (!avatars.IsEmpty)
         {
             set += ",Avatars=@p" + parameters.Count;

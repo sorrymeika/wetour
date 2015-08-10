@@ -1,0 +1,33 @@
+﻿@using SL.Util
+@{
+    RequestUtil req = new RequestUtil();
+    int userId = req.Int("userId", false, "参数错误:userId");
+    string auth = req.String("auth", false, "参数错误:auth");
+    int activityId = req.Int("id", false, "参数错误:id");
+
+    if (req.HasError)
+    {
+        Json.Write(new { success = false, msg = req.FirstError, errors = req.GetErrors() }, Output);
+    }
+    else if (!AuthHelper.Check(userId, auth))
+    {
+        Json.Write(new { success = false, msg = "请重新登录" }, Output);
+    }
+    else
+    {
+        List<object> parameters = new List<object>();
+
+        var data = SL.Data.SQL.QuerySingle("select ID from UserActivity where ActivityID=@p0 and UserID=@p1", activityId, userId);
+
+        if (data != null)
+        {
+            Json.Write(new { success = false, msg = "您已报名该活动！" }, Output);
+        }
+        else
+        {
+            SL.Data.SQL.Execute("update Activity set SignUpQty=SignUpQty+1 where ID=@p0 insert into UserActivity (ActivityID,UserID,JoinTime) values (@p0,@p1,@p2)", activityId, userId, DateTime.Now);
+
+            Json.Write(new { success = true }, Output);
+        }
+    }
+}
