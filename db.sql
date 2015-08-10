@@ -93,6 +93,7 @@ Sort int
 alter table Article add Pic1 varchar(255)
 alter table Article add TeachingAge varchar(10)
 alter table Article add PraiseRate varchar(10)
+alter table Article add ContinueRate varchar(10)
 alter table Article add [Type] int
 
 select * from Article

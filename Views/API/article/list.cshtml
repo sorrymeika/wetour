@@ -23,7 +23,7 @@
         pageSize,
         parameters.ToArray(),
         out total,
-        new Dictionary<string, bool> { { "Sort", false } });
+        new Dictionary<string, bool> { { "Sort", false }, { "ID", false } });
 
     if (data != null)
     {

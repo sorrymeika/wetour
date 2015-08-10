@@ -33,7 +33,7 @@
         if (!avatars.IsEmpty)
         {
             set += ",Avatars=@p" + parameters.Count;
-            parameters.Add(avatars.Save());
+            parameters.Add(avatars.Save(200));
         }
 
         if (set == "")

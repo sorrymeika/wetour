@@ -17,6 +17,7 @@
     int sort = req.Int("sort");
     string teachingAge = req.String("TeachingAge");
     string praiseRate = req.String("PraiseRate");
+    string continueRate = req.String("ContinueRate");
     string type = req.String("type");
 
     if (req.HasError)
@@ -57,6 +58,13 @@
             set += ",PraiseRate=@p" + parameters.Count;
             parameters.Add(praiseRate);
         }
+
+        if (!string.IsNullOrEmpty(continueRate))
+        {
+            set += ",ContinueRate=@p" + parameters.Count;
+            parameters.Add(continueRate);
+        }
+
         if (relativeID != -1)
         {
             set += ",RelativeID=@p" + parameters.Count;
