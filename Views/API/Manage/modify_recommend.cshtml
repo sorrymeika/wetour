@@ -6,8 +6,7 @@
     string name = req.String("name");
     string content = req.String("content");
     int favorite = req.Int("favorite");
-    var middlePic = req.File("middlePic");
-    var largePic = req.File("largePic");
+    var pic = req.File("pic");
 
     if (req.HasError)
     {
@@ -32,16 +31,10 @@
             parameters.Add(content);
         }
 
-        if (!middlePic.IsEmpty)
+        if (!pic.IsEmpty)
         {
-            set += ",MiddlePic=@p" + parameters.Count;
-            parameters.Add(middlePic.Save());
-        }
-
-        if (!largePic.IsEmpty)
-        {
-            set += ",LargePic=@p" + parameters.Count;
-            parameters.Add(largePic.Save());
+            set += ",Pic=@p" + parameters.Count;
+            parameters.Add(pic.Save());
         }
 
         if (set == "")

@@ -4,13 +4,14 @@
     int page = req.Int("page");
     int pageSize = req.Int("pageSize", 10);
     string keywords = req.String("keywords");
+    int areaId = req.Int("areaid", 1);
 
-    string where = "1=1";
-    List<object> parameters = new List<object>();
+    string where = "AreaID=@p0";
+    List<object> parameters = new List<object> { areaId };
 
     if (!string.IsNullOrEmpty(keywords))
     {
-        where += " and Name like '%'+@p0+'%'";
+        where += " and Name like '%'+@p1+'%'";
         parameters.Add(keywords);
     }
 
@@ -19,13 +20,13 @@
 
     if (req.Int("getall") == 1)
     {
-        total = 10;
-        data = SL.Data.SQL.Query("select ID,Name,MiddlePic,LargePic,Favorite,IsRecommend from Destination");
+        total = 100;
+        data = SL.Data.SQL.Query("select ID,Name,MiddlePic,LargePic,Favorite from Destination where " + where, parameters.ToArray());
     }
     else
     {
         data = SL.Data.SQL.QueryPage("ID",
-                "ID,Name,MiddlePic,LargePic,Favorite,IsRecommend",
+                "ID,Name,MiddlePic,LargePic,Favorite",
                 "Destination",
                 where,
                 page,

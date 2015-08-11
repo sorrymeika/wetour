@@ -5,6 +5,7 @@
     string auth = req.String("auth", false, "参数错误:auth");
     string nickName = req.String("nickName");
     string address = req.String("address");
+    string favorite = req.String("favorite");
     bool gender = req.Bool("gender");
     var avatars = req.File("avatars");
 
@@ -30,6 +31,32 @@
         {
             set += ",Address=@p" + parameters.Count;
             parameters.Add(address);
+        }
+
+        if (!string.IsNullOrEmpty(favorite))
+        {
+            int favoriteId = req.Int("FavoriteID");
+            string favoriteType = req.String("FavoriteType");
+            bool isFavorite = req.Bool("IsFavorite");
+
+            using (SL.Data.Database db = SL.Data.Database.Open())
+            {
+                if (favoriteType == "recommend")
+                {
+                    db.Execute("update Recommend set Favorite=Favorite+@p0 where ID=@p1", isFavorite ? 1 : -1, favoriteId);
+                }
+                else if (favoriteType == "destination")
+                {
+                    db.Execute("update Destination set Favorite=Favorite+@p0 where ID=@p1", isFavorite ? 1 : -1, favoriteId);
+                }
+                else if (favoriteType == "activity")
+                {
+                    db.Execute("update Activity set Favorite=Favorite+@p0 where ID=@p1", isFavorite ? 1 : -1, favoriteId);
+                }
+            }
+
+            set += ",Favorite=@p" + parameters.Count;
+            parameters.Add(favorite);
         }
 
         set += ",Gender=@p" + parameters.Count;

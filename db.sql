@@ -68,12 +68,6 @@ UserID int,
 JoinTime datetime
 )
 
-create table Recommend(
-ID int identity primary key,
-RelativeID int,
-Type int,
-Sort int
-)
 
 create table Article(
 ID int identity primary key,
@@ -108,3 +102,38 @@ InsertTime datetime,
 Up int,
 Reply varchar(max)
 )
+
+--2015-8-11--
+drop table Recommend
+create table Recommend(
+ID int identity primary key,
+Name varchar(400),
+Content varchar(max),
+Pic varchar(255),
+Favorite int,
+AreaID int
+)
+create table RecommendComment(
+ID int identity primary key,
+RecommendID int,
+UserID int,
+Content varchar(1000),
+CommentTime datetime,
+Reply varchar(max)
+)
+
+alter table Destination add AreaID int
+alter table Activity add AreaID int
+alter table Quan add AreaID int
+
+update Destination set AreaID=1
+update Activity set AreaID=1
+update Quan set AreaID=1
+
+alter table Quan add Status int
+alter table DestinationComment add Status int
+alter table ActivityComment add Status int
+alter table RecommendComment add Status int
+
+
+alter table Users add Favorite varchar(max)

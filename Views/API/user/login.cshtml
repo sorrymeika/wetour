@@ -10,7 +10,7 @@
     }
     else
     {
-        var data = SL.Data.SQL.QuerySingle("select ID,Password,NickName,Avatars from Users where Mobile=@p0", mobile);
+        var data = SL.Data.SQL.QuerySingle("select ID,Password,NickName,Avatars,Favorite from Users where Mobile=@p0", mobile);
         if (data == null)
         {
             Json.Write(new { success = false, msg = "账号不存在" }, Output);
@@ -35,6 +35,7 @@
                     ID = data.ID,
                     Mobile = mobile,
                     NickName = data.NickName,
+                    Favorite = data.Favorite,
                     Avatars = data.Avatars != null ? RequestFile.FullUrl(data.Avatars) : null,
                     Auth = auth
                 }

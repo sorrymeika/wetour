@@ -282,7 +282,7 @@
     <Content Include="Views\API\destination\reply_comment.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\API\activity\recommend.cshtml" />
+    <Content Include="Views\API\recommend\list.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\API\Manage\delete_recommend.cshtml" />
@@ -320,6 +320,13 @@
     <Content Include="Views\API\activity\signup.cshtml" />
     <Content Include="Views\API\user\comment_list.cshtml" />
     <Content Include="Views\API\user\activity_list.cshtml" />
+    <Content Include="Views\API\recommend\add_comment.cshtml" />
+    <Content Include="Views\API\recommend\comment_list.cshtml" />
+    <Content Include="Views\API\recommend\reply_comment.cshtml" />
+    <Content Include="Views\API\recommend\get.cshtml" />
+    <Content Include="Views\API\Manage\add_recommend.cshtml" />
+    <Content Include="Views\API\Manage\modify_recommend.cshtml" />
+    <Content Include="Views\API\activity\userlist.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

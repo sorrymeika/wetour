@@ -4,7 +4,6 @@
     int page = req.Int("page");
     int pageSize = req.Int("pageSize", 10);
     string keywords = req.String("keywords");
-
     int areaId = req.Int("areaid", 1);
 
     string where = "AreaID=@p0";
@@ -17,14 +16,24 @@
     }
 
     int total;
-    var data = SL.Data.SQL.QueryPage("ID",
-        "ID,Name,StartTime,FinishTime,Pic,Favorite,SignUpQty,Address",
-        "Activity",
-        where,
-        page,
-        pageSize,
-        parameters.ToArray(),
-        out total);
+    dynamic data;
+
+    if (req.Int("getall") == 1)
+    {
+        total = 10;
+        data = SL.Data.SQL.Query("select ID,Name,Pic,Favorite from Recommend");
+    }
+    else
+    {
+        data = SL.Data.SQL.QueryPage("ID",
+                "ID,Name,Pic,Favorite",
+                "Recommend",
+                where,
+                page,
+                pageSize,
+                parameters.ToArray(),
+                out total);
+    }
 
     if (data != null)
     {

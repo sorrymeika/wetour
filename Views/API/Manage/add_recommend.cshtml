@@ -5,8 +5,7 @@
     int areaId = req.Int("areaid", 1);
     string name = req.String("name", false, "请填写用户名");
     string content = req.String("content", false, "请填写正文");
-    var middlePic = req.File("middlePic", false, "请上传图片");
-    var largePic = req.File("largePic", false, "请上传图片");
+    var pic = req.File("pic", false, "请上传图片");
 
     content = Regex.Replace(content, @"<script.*?>[\s\S]*</script>", "", RegexOptions.IgnoreCase);
 
@@ -16,11 +15,10 @@
     }
     else
     {
-        string middlePicSrc = middlePic.Save();
-        string largePicSrc = largePic.Save();
+        string picSrc = pic.Save();
 
         int id;
-        int count = SL.Data.SQL.Execute("insert into Destination (Name,Content,MiddlePic,LargePic,Favorite,AreaID) values (@p0,@p1,@p2,@p3,0,@p4)", out id, name, content, middlePicSrc, largePicSrc, areaId);
+        int count = SL.Data.SQL.Execute("insert into Recommend (Name,Content,Pic,Favorite,AreaID) values (@p0,@p1,@p2,0,@p3)", out id, name, content, picSrc, areaId);
 
         if (count <= 0)
         {
@@ -28,7 +26,7 @@
         }
         else
         {
-            Json.Write(new { success = true, msg = "添加成功", data = new { Name = name, Content = content, MiddlePic = middlePicSrc, LargePic = largePicSrc, Favorite = 0 } }, Output);
+            Json.Write(new { success = true, msg = "添加成功", data = new { Name = name, Content = content, Pic = picSrc, Favorite = 0 } }, Output);
         }
     }
 }

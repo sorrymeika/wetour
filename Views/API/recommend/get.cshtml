@@ -9,7 +9,7 @@
     }
     else
     {
-        var data = SL.Data.SQL.QuerySingle("select ID,Name,Content,MiddlePic,LargePic,Favorite from Destination where ID=@p0", id);
+        var data = SL.Data.SQL.QuerySingle("select ID,Name,Content,Pic,Favorite from Recommend where ID=@p0", id);
 
         if (data != null)
         {
@@ -17,8 +17,7 @@
             {
                 data.Content = System.Text.RegularExpressions.Regex.Replace(data.Content, @"http\:\/\/[^\/]+\/", "http://" + Request.Url.Host + ":" + Request.Url.Port + "/");
             }
-            data.MiddlePic = RequestFile.FullUrl(data.MiddlePic);
-            data.LargePic = RequestFile.FullUrl(data.LargePic);
+            data.MiddlePic = data.Pic = RequestFile.FullUrl(data.Pic);
         }
 
         Json.Write(new { success = true, data = data }, Output);

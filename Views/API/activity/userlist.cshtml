@@ -5,21 +5,21 @@
     int pageSize = req.Int("pageSize", 10);
     string keywords = req.String("keywords");
 
-    int areaId = req.Int("areaid", 1);
+    int id = req.Int("id", 1);
 
-    string where = "AreaID=@p0";
-    List<object> parameters = new List<object> { areaId };
+    string where = "ActivityID=@p0";
+    List<object> parameters = new List<object> { id };
 
     if (!string.IsNullOrEmpty(keywords))
     {
-        where += " and Name like '%'+@p1+'%'";
+        where += " and (b.NickName like '%'+@p1+'%' or b.Mobile=@p1)";
         parameters.Add(keywords);
     }
 
     int total;
     var data = SL.Data.SQL.QueryPage("ID",
-        "ID,Name,StartTime,FinishTime,Pic,Favorite,SignUpQty,Address",
-        "Activity",
+        "b.ID,Mobile,NickName,JoinTime,Gender,Address",
+        "UserActivity a join Users b on a.UserID=b.ID",
         where,
         page,
         pageSize,

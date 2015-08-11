@@ -10,14 +10,14 @@
 
     if (activityId != 0)
     {
-        where += " and a.ActivityID=@p" + parameters.Count;
+        where += " and a.RecommendID=@p" + parameters.Count;
         parameters.Add(activityId);
     }
 
     int total;
     var data = SL.Data.SQL.QueryPage("ID",
         "a.ID,a.Content,a.CommentTime,a.UserID,b.Mobile,b.NickName,b.Avatars",
-        "ActivityComment a join Users b on a.UserID=b.ID",
+        "RecommendComment a join Users b on a.UserID=b.ID",
         where,
         page,
         pageSize,
@@ -29,8 +29,8 @@
         for (int i = 0; i < data.Count; i++)
         {
             var item = data[i];
-            item.Mobile = item.Mobile.Substring(0, 3) + "****" + item.Mobile.Substring(7, 4);
             item.Avatars = RequestFile.FullUrl(item.Avatars);
+            item.Mobile = item.Mobile.Substring(0, 3) + "****" + item.Mobile.Substring(7, 4);
 
             if (!string.IsNullOrEmpty(item.Pictures))
             {
@@ -53,8 +53,8 @@
                             var reply = item.Reply[j];
                             int uid = (int)reply["UserID"];
                             var user = db.QuerySingle("select Mobile,NickName,Avatars from Users where ID=@p0", uid);
-
                             user.Mobile = user.Mobile.Substring(0, 3) + "****" + user.Mobile.Substring(7, 4);
+
                             reply["Mobile"] = user.Mobile;
                             reply["NickName"] = user.NickName;
                             reply["Avatars"] = RequestFile.FullUrl(user.Avatars);

@@ -21,6 +21,7 @@
         }
         else
         {
+            data.Password = null;
             data.Avatars = RequestFile.FullUrl(data.Avatars);
             Json.Write(new { success = true, data = data }, Output);
         }

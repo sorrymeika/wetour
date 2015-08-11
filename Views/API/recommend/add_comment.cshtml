@@ -1,0 +1,26 @@
+﻿@using SL.Util
+@{
+    RequestUtil req = new RequestUtil();
+    int userId = req.Int("userId", false, "参数错误:userId");
+    string auth = req.String("auth", false, "参数错误:auth");
+    int destId = req.Int("destId", false, "参数错误:activityId");
+    string content = req.String("content", false, "参数错误:content");
+
+    if (req.HasError)
+    {
+        Json.Write(new { success = false, msg = req.FirstError, errors = req.GetErrors() }, Output);
+    }
+    else if (!AuthHelper.Check(userId, auth))
+    {
+        Json.Write(new { success = false, msg = "请重新登录" }, Output);
+    }
+    else
+    {
+        List<object> parameters = new List<object>();
+
+        int id;
+        var data = SL.Data.SQL.Execute("insert into RecommendComment (RecommendID,UserID,Content,CommentTime) values (@p0,@p1,@p2,@p3)", out id, destId, userId, HttpUtility.HtmlEncode(content), DateTime.Now);
+
+        Json.Write(new { success = true, id = id }, Output);
+    }
+}

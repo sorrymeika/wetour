@@ -5,8 +5,10 @@
     int pageSize = req.Int("pageSize", 10);
     string keywords = req.String("keywords");
 
-    string where = "1=1";
-    List<object> parameters = new List<object>();
+    int areaId = req.Int("areaid", 1);
+
+    string where = "AreaID=@p0";
+    List<object> parameters = new List<object> { areaId };
 
     if (!string.IsNullOrEmpty(keywords))
     {

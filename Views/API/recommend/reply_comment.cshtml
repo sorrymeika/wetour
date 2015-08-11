@@ -1,0 +1,55 @@
+﻿@using SL.Util
+@{
+    RequestUtil req = new RequestUtil();
+    int id = req.Int("id", false, "参数错误:id");
+    int userId = req.Int("userId", false, "参数错误:userId");
+    string auth = req.String("auth", false, "参数错误:auth");
+    int activityId = req.Int("activityId", false, "参数错误:activityId");
+    string content = req.String("content", false, "参数错误:content");
+
+    if (req.HasError)
+    {
+        Json.Write(new { success = false, msg = req.FirstError, errors = req.GetErrors() }, Output);
+    }
+    else if (!AuthHelper.Check(userId, auth))
+    {
+        Json.Write(new { success = false, msg = "请重新登录" }, Output);
+    }
+    else
+    {
+        List<object> parameters = new List<object>();
+
+        using (SL.Data.Database db = SL.Data.Database.Open())
+        {
+            var data = db.QuerySingle("select Reply from RecommendComment where ID=@p0", id);
+
+            if (data != null)
+            {
+                List<Dictionary<string, object>> reply;
+                if (string.IsNullOrEmpty(data.Reply))
+                {
+                    reply = new List<Dictionary<string, object>>();
+                }
+                else
+                {
+                    reply = Json.Decode<List<Dictionary<string, object>>>(data.Reply);
+                }
+
+                reply.Add(new Dictionary<string, object> {
+                    { "UserID",userId },
+                    { "Content", content },
+                    { "InsertTime", DateTime.Now }
+                });
+
+                db.Execute("update RecommendComment Reply=@p1 where ID=@p0", id, Json.Encode(reply));
+
+                Json.Write(new { success = true }, Output);
+            }
+            else
+            {
+                Json.Write(new { success = false, msg = "" }, Output);
+            }
+        }
+
+    }
+}
