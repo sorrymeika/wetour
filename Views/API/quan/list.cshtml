@@ -39,7 +39,7 @@
                 item.Pictures = Json.Decode<List<Dictionary<string, object>>>(item.Pictures);
                 for (int j = 0; j < item.Pictures.Count; j++)
                 {
-                    //item.Pictures[j].Src=RequestFile.FullUrl(item.Pictures[j].Src);
+                    item.Pictures[j].Src = RequestFile.FullUrl(item.Pictures[j].Src);
                 }
             }
             if (!string.IsNullOrEmpty(item.Reply))
