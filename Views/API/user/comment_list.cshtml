@@ -6,6 +6,8 @@
     string keywords = req.String("keywords");
     int userId = req.Int("userId", false, "参数错误:userId");
     string auth = req.String("auth", false, "参数错误:auth");
+    string status = req.String("status");
+
     if (req.HasError)
     {
         Json.Write(new { success = false, msg = req.FirstError, errors = req.GetErrors() }, Output);
@@ -25,10 +27,16 @@
             parameters.Add(keywords);
         }
 
+        if (!string.IsNullOrEmpty(status))
+        {
+            where += " and Status=@p" + parameters.Count;
+            parameters.Add(req.Int("Status"));
+        }
+
         int total;
         var data = SL.Data.SQL.QueryPage("ID",
-            "a.ID,a.Content,a.Pictures,a.InsertTime,a.Reply,a.Up,b.Mobile,b.NickName,b.Avatars",
-            "Quan a join Users b on a.UserID=b.ID",
+            "a.ID,a.Content,a.Pictures,a.InsertTime,a.Reply,a.Up,a.Type,b.Mobile,b.NickName,b.Avatars",
+            "(select ID,Content,Pictures,InsertTime,Reply,Up,Status,UserID,0 as Type from Quan union select ID,Content,Pictures,CommentTime as InsertTime,Reply,Up,Status,UserID,1 as Type from RecommendComment union select ID,Content,Pictures,CommentTime as InsertTime,Reply,Up,Status,UserID,2 as Type from DestinationComment union select ID,Content,Pictures,CommentTime as InsertTime,Reply,Up,Status,UserID,3 as Type from ActivityComment) a join Users b on a.UserID=b.ID",
             where,
             page,
             pageSize,

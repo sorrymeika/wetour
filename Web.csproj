@@ -316,7 +316,7 @@
     <None Include="Properties\PublishProfiles\Static.pubxml" />
     <Content Include="Views\API\article\listall.cshtml" />
     <Content Include="Views\API\quan\add_comment.cshtml" />
-    <Content Include="Views\API\quan\reply.cshtml" />
+    <Content Include="Views\API\quan\reply_comment.cshtml" />
     <Content Include="Views\API\activity\signup.cshtml" />
     <Content Include="Views\API\user\comment_list.cshtml" />
     <Content Include="Views\API\user\activity_list.cshtml" />
@@ -327,6 +327,11 @@
     <Content Include="Views\API\Manage\add_recommend.cshtml" />
     <Content Include="Views\API\Manage\modify_recommend.cshtml" />
     <Content Include="Views\API\activity\userlist.cshtml" />
+    <Content Include="Views\API\Manage\modify_quan.cshtml" />
+    <Content Include="Views\API\Manage\delete_quan.cshtml" />
+    <Content Include="Views\API\Manage\modify_destination_comment.cshtml" />
+    <Content Include="Views\API\Manage\modify_activity_comment.cshtml" />
+    <Content Include="Views\API\Manage\modify_recommend_comment.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,0 +1,41 @@
+﻿@using SL.Util
+@using System.Text.RegularExpressions
+@{
+    RequestUtil req = new RequestUtil();
+    int id = req.Int("id");
+    int status = req.Int("status");
+
+    if (req.HasError)
+    {
+        Json.Write(new { success = false, msg = req.FirstError, errors = req.GetErrors() }, Output);
+    }
+    else
+    {
+        string set = "";
+        List<object> parameters = new List<object> { id };
+
+        if (status != 0)
+        {
+            set += "Status=@p" + parameters.Count;
+            parameters.Add(status);
+        }
+
+        if (set == "")
+        {
+            Json.Write(new { success = false, msg = "未作修改" }, Output);
+        }
+        else
+        {
+            int count = SL.Data.SQL.Execute("update RecommendComment set " + set.TrimStart(',') + " where ID=@p0", parameters.ToArray());
+
+            if (count <= 0)
+            {
+                Json.Write(new { success = false, msg = "修改失败" }, Output);
+            }
+            else
+            {
+                Json.Write(new { success = true, msg = "修改成功" }, Output);
+            }
+        }
+    }
+}

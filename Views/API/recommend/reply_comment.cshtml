@@ -4,7 +4,6 @@
     int id = req.Int("id", false, "参数错误:id");
     int userId = req.Int("userId", false, "参数错误:userId");
     string auth = req.String("auth", false, "参数错误:auth");
-    int activityId = req.Int("activityId", false, "参数错误:activityId");
     string content = req.String("content", false, "参数错误:content");
 
     if (req.HasError)
@@ -41,7 +40,7 @@
                     { "InsertTime", DateTime.Now }
                 });
 
-                db.Execute("update RecommendComment Reply=@p1 where ID=@p0", id, Json.Encode(reply));
+                db.Execute("update RecommendComment set Reply=@p1 where ID=@p0", id, Json.Encode(reply));
 
                 Json.Write(new { success = true }, Output);
             }

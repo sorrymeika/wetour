@@ -137,3 +137,14 @@ alter table RecommendComment add Status int
 
 
 alter table Users add Favorite varchar(max)
+
+
+--2015/08/20
+alter table Quan alter column Pictures varchar(max)
+alter table DestinationComment add Pictures varchar(max)
+alter table ActivityComment add Pictures varchar(max)
+alter table RecommendComment add Pictures varchar(max)
+
+alter table DestinationComment add Up int
+alter table ActivityComment add Up int
+alter table RecommendComment add Up int

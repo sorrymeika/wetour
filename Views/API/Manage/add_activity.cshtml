@@ -2,6 +2,7 @@
 @using System.Text.RegularExpressions
 @{
     RequestUtil req = new RequestUtil();
+    int areaId = req.Int("areaid", 1);
     string name = req.String("name", false, "请填写名称");
     string content = req.String("content", false, "请填写正文");
     string address = req.String("content", false, "请填写地址");
@@ -21,7 +22,7 @@
         string picSrc = pic.Save();
 
         int id;
-        int count = SL.Data.SQL.Execute("insert into Activity (Name,Content,StartTime,FinishTime,Pic,Favorite,isRecommend,Address,SignUpQty) values (@p0,@p1,@p2,@p3,@p4,0,@p5,@p6,0)", out id, name, content, startTime, finishTime, picSrc, isRecommend, address);
+        int count = SL.Data.SQL.Execute("insert into Activity (Name,Content,StartTime,FinishTime,Pic,Favorite,isRecommend,Address,SignUpQty,AreaID) values (@p0,@p1,@p2,@p3,@p4,0,@p5,@p6,0,@p7)", out id, name, content, startTime, finishTime, picSrc, isRecommend, address, areaId);
 
         if (count <= 0)
         {

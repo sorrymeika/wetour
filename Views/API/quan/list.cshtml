@@ -4,6 +4,7 @@
     int page = req.Int("page");
     int pageSize = req.Int("pageSize", 10);
     string keywords = req.String("keywords");
+    string status = req.String("status");
 
     int areaId = req.Int("areaid", 1);
 
@@ -16,9 +17,15 @@
         parameters.Add(keywords);
     }
 
+    if (!string.IsNullOrEmpty(status))
+    {
+        where += " and Status=@p" + parameters.Count;
+        parameters.Add(req.Int("Status"));
+    }
+
     int total;
     var data = SL.Data.SQL.QueryPage("ID",
-        "a.ID,a.Content,a.Pictures,a.InsertTime,a.Reply,a.Up,b.Mobile,b.NickName,b.Avatars",
+        "a.ID,a.Content,a.Pictures,a.InsertTime,a.Reply,a.Up,a.Status,b.Mobile,b.NickName,b.Avatars",
         "Quan a join Users b on a.UserID=b.ID",
         where,
         page,

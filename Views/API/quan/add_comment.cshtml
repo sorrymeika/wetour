@@ -4,6 +4,7 @@
     int userId = req.Int("userId", false, "参数错误:userId");
     string auth = req.String("auth", false, "参数错误:auth");
     string content = req.String("content", false, "参数错误:content");
+    string pictures = req.String("pictures");
 
     if (req.HasError)
     {
@@ -18,7 +19,7 @@
         List<object> parameters = new List<object>();
 
         int id;
-        var data = SL.Data.SQL.Execute("insert into Quan (UserID,Content,InsertTime,Up) values (@p0,@p1,@p2,@p3)", out id, userId, HttpUtility.HtmlEncode(content), DateTime.Now, 0);
+        var data = SL.Data.SQL.Execute("insert into Quan (UserID,Content,InsertTime,Up,Status,Pictures) values (@p0,@p1,@p2,@p3,0,0,@p4)", out id, userId, HttpUtility.HtmlEncode(content), DateTime.Now, 0, pictures);
 
         Json.Write(new { success = true, id = id }, Output);
     }

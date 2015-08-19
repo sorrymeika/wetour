@@ -18,7 +18,7 @@
 
     int total;
     var data = SL.Data.SQL.QueryPage("ID",
-        "b.ID,Mobile,NickName,JoinTime,Gender,Address",
+        "b.ID,Mobile,NickName,a.JoinTime,Gender,Address",
         "UserActivity a join Users b on a.UserID=b.ID",
         where,
         page,

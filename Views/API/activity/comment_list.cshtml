@@ -4,6 +4,7 @@
     int page = req.Int("page");
     int pageSize = req.Int("pageSize", 10);
     int activityId = req.Int("id");
+    string status = req.String("status");
 
     string where = "1=1";
     List<object> parameters = new List<object>();
@@ -14,9 +15,15 @@
         parameters.Add(activityId);
     }
 
+    if (!string.IsNullOrEmpty(status))
+    {
+        where += " and Status=@p" + parameters.Count;
+        parameters.Add(req.Int("Status"));
+    }
+
     int total;
     var data = SL.Data.SQL.QueryPage("ID",
-        "a.ID,a.Content,a.CommentTime,a.UserID,b.Mobile,b.NickName,b.Avatars",
+        "a.ID,a.Content,a.CommentTime,a.UserID,a.Status,a.Pictures,a.Up,a.Reply,b.Mobile,b.NickName,b.Avatars",
         "ActivityComment a join Users b on a.UserID=b.ID",
         where,
         page,
