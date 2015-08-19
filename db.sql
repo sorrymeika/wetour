@@ -68,6 +68,8 @@ UserID int,
 JoinTime datetime
 )
 
+select * from UserActivity
+
 
 create table Article(
 ID int identity primary key,
@@ -148,3 +150,6 @@ alter table RecommendComment add Pictures varchar(max)
 alter table DestinationComment add Up int
 alter table ActivityComment add Up int
 alter table RecommendComment add Up int
+
+
+select * from Activity
