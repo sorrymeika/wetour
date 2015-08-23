@@ -31,7 +31,8 @@
         page,
         pageSize,
         parameters.ToArray(),
-        out total);
+        out total,
+        new Dictionary<string, bool> { { "a.InsertTime", false } });
 
     if (data != null)
     {
@@ -44,10 +45,6 @@
             if (!string.IsNullOrEmpty(item.Pictures))
             {
                 item.Pictures = Json.Decode<List<Dictionary<string, object>>>(item.Pictures);
-                for (int j = 0; j < item.Pictures.Count; j++)
-                {
-                    item.Pictures[j].Src = RequestFile.FullUrl(item.Pictures[j].Src);
-                }
             }
             if (!string.IsNullOrEmpty(item.Reply))
             {

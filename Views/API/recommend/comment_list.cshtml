@@ -5,9 +5,16 @@
     int pageSize = req.Int("pageSize", 10);
     int activityId = req.Int("id");
     string status = req.String("status");
+    int areaId = req.Int("areaid");
 
     string where = "1=1";
     List<object> parameters = new List<object>();
+
+    if (areaId != 0)
+    {
+        where += " and c.AreaID=@p" + parameters.Count;
+        parameters.Add(areaId);
+    }
 
     if (activityId != 0)
     {
@@ -22,9 +29,9 @@
     }
 
     int total;
-    var data = SL.Data.SQL.QueryPage("ID",
+    var data = SL.Data.SQL.QueryPage("a.ID",
         "a.ID,a.Content,a.CommentTime,a.UserID,a.Status,a.Pictures,a.Up,a.Reply,b.Mobile,b.NickName,b.Avatars",
-        "RecommendComment a join Users b on a.UserID=b.ID",
+        "RecommendComment a join Users b on a.UserID=b.ID join Recommend c on c.ID=a.RecommendID",
         where,
         page,
         pageSize,
