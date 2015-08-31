@@ -52,6 +52,11 @@ namespace SL.Web
                "ImagePreview",
                new { controller = "Core", action = "ImagePreview" }
             );
+            routes.MapRoute(
+               "captcha_jpg",
+               "captcha/{id}",
+               new { controller = "Core", action = "Captcha", id = @"\d+" }
+            );
 
             routes.MapRoute(
                "captcha",
