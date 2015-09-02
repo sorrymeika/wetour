@@ -15,6 +15,12 @@ namespace SL.Web.Controllers
     public class CoreController : Controller
     {
         #region 页面路由
+        public ActionResult Home()
+        {
+            return File("~/index.html", "text/html");
+        }
+
+
         public ActionResult Index(string catalog, string handle)
         {
             this.ViewBag.RouteData = this.RouteData.Values;

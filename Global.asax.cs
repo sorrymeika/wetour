@@ -24,6 +24,12 @@ namespace SL.Web
             #region 默认
 
             routes.MapRoute(
+               "Entrance",
+               "",
+               new { controller = "Core", action = "Home" }
+            );
+
+            routes.MapRoute(
                "APIDefault",
                "API/{catalog}/{handle}",
                new { controller = "Core", action = "APIAction", catalog = "", handle = "" }

@@ -210,7 +210,7 @@
     <Content Include="Views\API\Manage\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\API\Manage\UMEditor.ImageUp.cshtml" />
+    <Content Include="Views\API\Manage\UMEditor_ImageUp.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\API\Manage\add_destination.cshtml" />

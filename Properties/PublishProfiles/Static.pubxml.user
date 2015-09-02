@@ -19,7 +19,7 @@
       <publishTime>08/24/2015 14:46:28</publishTime>
     </File>
     <File Include="bin/SL.Web.dll">
-      <publishTime>08/31/2015 17:30:23</publishTime>
+      <publishTime>09/02/2015 14:47:37</publishTime>
     </File>
     <File Include="bin/System.Web.Helpers.dll">
       <publishTime>01/05/2011 15:45:38</publishTime>
@@ -268,13 +268,13 @@
       <publishTime>03/19/2014 17:08:20</publishTime>
     </File>
     <File Include="components/umeditor/umeditor.config.js">
-      <publishTime>07/20/2015 09:13:12</publishTime>
+      <publishTime>09/01/2015 11:27:41</publishTime>
     </File>
     <File Include="components/umeditor/umeditor.js">
       <publishTime>07/17/2015 16:47:38</publishTime>
     </File>
     <File Include="controller.js">
-      <publishTime>08/31/2015 14:01:19</publishTime>
+      <publishTime>09/01/2015 12:48:42</publishTime>
     </File>
     <File Include="Global.asax">
       <publishTime>07/20/2015 09:38:19</publishTime>
@@ -325,13 +325,13 @@
       <publishTime>07/15/2015 16:56:50</publishTime>
     </File>
     <File Include="images/style.css">
-      <publishTime>08/31/2015 14:01:19</publishTime>
+      <publishTime>09/01/2015 12:48:42</publishTime>
     </File>
     <File Include="index.html">
-      <publishTime>08/31/2015 14:01:17</publishTime>
+      <publishTime>09/01/2015 12:48:40</publishTime>
     </File>
     <File Include="slan.js">
-      <publishTime>08/31/2015 14:01:19</publishTime>
+      <publishTime>09/01/2015 12:48:42</publishTime>
     </File>
     <File Include="Views/API/activity/add_comment.cshtml">
       <publishTime>08/20/2015 09:15:02</publishTime>
@@ -436,6 +436,9 @@
       <publishTime>08/20/2015 09:15:02</publishTime>
     </File>
     <File Include="Views/API/Manage/UMEditor.ImageUp.cshtml">
+      <publishTime>07/22/2015 09:19:51</publishTime>
+    </File>
+    <File Include="Views/API/Manage/UMEditor_ImageUp.cshtml">
       <publishTime>07/22/2015 09:19:51</publishTime>
     </File>
     <File Include="Views/API/Manage/user_list.cshtml">
