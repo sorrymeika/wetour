@@ -53,6 +53,10 @@
                 {
                     db.Execute("update Activity set Favorite=Favorite+@p0 where ID=@p1", isFavorite ? 1 : -1, favoriteId);
                 }
+                else if (favoriteType == "quan")
+                {
+                    db.Execute("update Quan set Up=Up+@p0 where ID=@p1", isFavorite ? 1 : -1, favoriteId);
+                }
             }
 
             set += ",Favorite=@p" + parameters.Count;

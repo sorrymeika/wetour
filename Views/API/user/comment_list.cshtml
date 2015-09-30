@@ -35,8 +35,11 @@
 
         int total;
         var data = SL.Data.SQL.QueryPage("ID",
-            "a.ID,a.Content,a.Pictures,a.InsertTime,a.Reply,a.Up,a.Type,b.Mobile,b.NickName,b.Avatars",
-            "(select ID,Content,Pictures,InsertTime,Reply,Up,Status,UserID,0 as Type from Quan union select ID,Content,Pictures,CommentTime as InsertTime,Reply,Up,Status,UserID,1 as Type from RecommendComment union select ID,Content,Pictures,CommentTime as InsertTime,Reply,Up,Status,UserID,2 as Type from DestinationComment union select ID,Content,Pictures,CommentTime as InsertTime,Reply,Up,Status,UserID,3 as Type from ActivityComment) a join Users b on a.UserID=b.ID",
+            "a.ID,a.Content,a.Pictures,a.InsertTime,a.Reply,a.Up,a.Type,b.Mobile,b.NickName,b.Avatars,a.Name,a.Pic,a.RID",
+            @"(select a.ID,a.Content,Pictures,InsertTime,Reply,Up,Status,UserID,0 as Type,'' as Name,'' as Pic,0 as RID from Quan a union
+            select a.ID,a.Content,Pictures,CommentTime as InsertTime,Reply,Up,Status,UserID,1 as Type,b.Name,Pic,b.ID as RID from RecommendComment a join Recommend b on a.RecommendID=b.ID union
+            select a.ID,a.Content,Pictures,CommentTime as InsertTime,Reply,Up,Status,UserID,2 as Type,b.Name,MiddlePic as Pic,b.ID as RID from DestinationComment a join Destination b on a.DestinationID=b.ID union
+            select a.ID,a.Content,Pictures,CommentTime as InsertTime,Reply,Up,Status,UserID,3 as Type,b.Name,Pic,b.ID as RID from ActivityComment a join Activity b on a.ActivityID=b.ID) a join Users b on a.UserID=b.ID",
             where,
             page,
             pageSize,
@@ -56,6 +59,10 @@
                     for (int j = 0; j < item.Pictures.Count; j++)
                     {
                     }
+                }
+                if (!string.IsNullOrEmpty(item.Pic))
+                {
+                    item.Pic = RequestFile.FullUrl(item.Pic);
                 }
                 if (!string.IsNullOrEmpty(item.Reply))
                 {
