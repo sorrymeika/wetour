@@ -1,0 +1,50 @@
+﻿@using SL.Util
+@{
+    RequestUtil req = new RequestUtil();
+    int id = req.Int("id", false, "参数错误:id");
+    int userId = req.Int("userId", false, "参数错误:userId");
+    string auth = req.String("auth", false, "参数错误:auth");
+    int type = req.Int("type", false, "参数错误:type");
+    // int reply = req.Int("reply", false, "参数错误:type");
+
+    if (req.HasError)
+    {
+        Json.Write(new { success = false, msg = req.FirstError, errors = req.GetErrors() }, Output);
+    }
+    else if (!AuthHelper.Check(userId, auth))
+    {
+        Json.Write(new { success = false, msg = "请重新登录" }, Output);
+    }
+    else
+    {
+        List<object> parameters = new List<object>();
+
+        using (SL.Data.Database db = SL.Data.Database.Open())
+        {
+            string table = type == 1 ? "RecommendComment" : type == 2 ? "DestinationComment" : type == 3 ? "ActivityComment" : "Quan";
+
+            var data = db.QuerySingle("select Reply from " + table + " where ID=@p0", id);
+
+            db.Execute("delete from " + table + " where ID=@p0", id);
+
+            if (data != null)
+            {
+                List<Dictionary<string, object>> reply;
+                if (string.IsNullOrEmpty(data.Reply))
+                {
+                    reply = new List<Dictionary<string, object>>();
+                }
+                else
+                {
+                    reply = Json.Decode<List<Dictionary<string, object>>>(data.Reply);
+                }
+            }
+            else
+            {
+            }
+
+            Json.Write(new { success = true }, Output);
+        }
+
+    }
+}

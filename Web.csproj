@@ -332,6 +332,7 @@
     <Content Include="Views\API\Manage\modify_destination_comment.cshtml" />
     <Content Include="Views\API\Manage\modify_activity_comment.cshtml" />
     <Content Include="Views\API\Manage\modify_recommend_comment.cshtml" />
+    <Content Include="Views\API\user\delete_comment.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

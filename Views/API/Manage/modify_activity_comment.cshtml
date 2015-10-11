@@ -28,14 +28,8 @@
         {
             int count = SL.Data.SQL.Execute("update ActivityComment set " + set.TrimStart(',') + " where ID=@p0", parameters.ToArray());
 
-            if (count <= 0)
-            {
-                Json.Write(new { success = false, msg = "修改失败" }, Output);
-            }
-            else
-            {
-                Json.Write(new { success = true, msg = "修改成功" }, Output);
-            }
+
+            Json.Write(new { success = true, msg = "修改成功" }, Output);
         }
     }
 }

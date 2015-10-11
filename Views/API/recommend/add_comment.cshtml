@@ -20,7 +20,7 @@
         List<object> parameters = new List<object>();
 
         int id;
-        var data = SL.Data.SQL.Execute("insert into RecommendComment (RecommendID,UserID,Content,CommentTime,Up,Status,Pictures) values (@p0,@p1,@p2,@p3,0,0,@4)", out id, destId, userId, HttpUtility.HtmlEncode(content), DateTime.Now, pictures);
+        var data = SL.Data.SQL.Execute("insert into RecommendComment (RecommendID,UserID,Content,CommentTime,Up,Status,Pictures) values (@p0,@p1,@p2,@p3,0,0,@p4)", out id, destId, userId, HttpUtility.HtmlEncode(content), DateTime.Now, pictures);
 
         Json.Write(new { success = true, id = id }, Output);
     }
